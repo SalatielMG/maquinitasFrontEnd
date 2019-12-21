@@ -1,0 +1,7 @@
+{
+  "name": "maquinitasFrontEnd",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
