@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Maquinitas</string>
+    <string name="title_activity_main">Maquinitas</string>
+    <string name="package_name">montero.glez.salatiel</string>
+    <string name="custom_url_scheme">montero.glez.salatiel</string>
+</resources>

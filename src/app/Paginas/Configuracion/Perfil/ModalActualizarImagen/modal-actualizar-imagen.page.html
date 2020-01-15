@@ -1,0 +1,32 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md">
+    <ion-buttons slot="start">
+      <ion-button mode="md" (click)="cerrarModal()" color="success" class="btn-header">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Actualizar Imagen</ion-title>
+    <ion-buttons slot="end">
+      <ion-button mode="md" (click)="subirFoto()" color="danger" class="btn-header">
+        <ion-icon name="checkmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="profile-img">
+    <div id="img-fondo">
+      <img [src]="photo">
+    </div>
+    <div id="img-upload">
+      <img [src]="photo" class="box-shadow-img filter-img">
+    </div>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="takePicture()">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

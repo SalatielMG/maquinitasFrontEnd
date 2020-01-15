@@ -1,0 +1,66 @@
+<ion-header mode='md'>
+  <ion-toolbar mode='md'>
+    <ion-buttons slot="start" >
+      <ion-menu-button mode="md"></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="title-page-left">Gastos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="recargarGastos($event)">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Deslice para actualizar"
+            refreshingSpinner="circles"
+            refreshingText="Cargando gastos sobre monto de $1.00. ¡ Porfavor espere !">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-list>
+    <ion-item-sliding *ngFor="let gasto of gastoService.Gastos; let i = index">
+      <ion-item detail class="item-gasto" (click)="verGasto(gasto)">
+        <ion-thumbnail slot="start">
+          <ion-img src="assets/images/Fondo.svg"></ion-img>
+        </ion-thumbnail>
+        <ion-row>
+          <ion-row>
+            <ion-col size="11">
+              <h5><strong>{{gasto.fecha | date: 'dd MMMM yyyy'}}</strong></h5>
+            </ion-col>
+            <ion-col size="1" id="etiqueta">
+              <ion-icon name="pricetags" color="dark" *ngIf="gasto.descripcion != ''"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="5">
+              <h6><strong>Tipo: </strong></h6>
+              <h6><strong>Gasto: </strong></h6>
+            </ion-col>
+            <ion-col size="7">
+              <h6>{{gasto.nombre}}</h6>
+              <h6>{{gasto.gasto | currency: '$'}}</h6>
+            </ion-col>
+          </ion-row>
+        </ion-row>
+      </ion-item>
+      <ion-item-options side="start">
+        <ion-item-option (click)="eliminarGasto(gasto, i)" expandable class="fondo-rojo">
+          <ion-icon name="trash" slot="icon-only"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+      <ion-item-options side="end">
+        <ion-item-option (click)="abrirModal(util.operacion.ACTUALIZAR, gasto, i)" expandable class="fondo-azul">
+          <ion-icon name="create" slot="icon-only"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <div *ngIf="gastoService.Gastos.length == 0" class="ion-padding">
+    <h5 class="ion-text-center ion-text-wrap font-weight-bold">{{gastoService.msj}}</h5>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="abrirModal()" class="btn-floating-verde">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

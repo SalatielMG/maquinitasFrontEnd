@@ -1,0 +1,110 @@
+<ion-header mode='md'>
+  <ion-toolbar mode='md'>
+    <ion-title class="title-page-right">
+      {{opcion}} devolución
+    </ion-title>
+    <ion-title class="title-page-right">
+      ${{Devolucion.value.tipo}}.00
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button mode="md" (click)="cerrarModal()" class="btn-header">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="tarjeta">
+    <ion-card-header>
+      <ion-img src="/assets/images/Fondo-M.svg"></ion-img>
+      <h5 class="ion-text-center font-weight-bold color-white">Caja Actual: {{cajaService.cajaAbierta.cajaOpen.id}}</h5>
+      <ion-button color="dark" (click) = "verificarDespliegue()">
+        <ion-icon *ngIf="cajaService.cajaAbierta.cajaOpen.corte == 0" name="arrow-forward" color="light"></ion-icon>
+        <ion-icon *ngIf="cajaService.cajaAbierta.cajaOpen.corte == 1" name="arrow-down" color="light"></ion-icon>
+      </ion-button>
+    </ion-card-header>
+    <ion-card-content #cntCajaActual id="content-caja">
+      <ion-list *ngIf="Devolucion.value.tipo == 1">
+        <ion-item lines="none">
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          <ion-label class="font-weight-bold">Fecha:</ion-label>
+          <ion-label slot="end" class="no-margin-left">{{cajaService.cajaAbierta.cajaOpen.fechaAbierto | date: 'dd MMMM yyyy'}}</ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          <ion-label>Monto inicial $1:</ion-label>
+          <ion-badge class="badge-verde" slot="end">{{cajaService.cajaAbierta.cajaOpen.monto1 | currency: '$'}}</ion-badge>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          <ion-label>Total devolución:</ion-label>
+          <ion-badge class="badge-rojo" slot="end">{{cajaService.cajaAbierta.cajaOpen.totaldevolucion1 | currency: '$'}}</ion-badge>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          <ion-label>Total gastos:</ion-label>
+          <ion-badge class="badge-rojo" slot="end">{{cajaService.cajaAbierta.cajaOpen.totalgastos | currency: '$'}}</ion-badge>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          <ion-label class="font-weight-bold">Total monto $1:</ion-label>
+          <ion-badge class="badge-azul" slot="end">{{util.totalMonto1(cajaService.cajaAbierta.cajaOpen.monto1, cajaService.cajaAbierta.cajaOpen.totaldevolucion1, cajaService.cajaAbierta.cajaOpen.totalgastos) | currency: '$'}}</ion-badge>
+        </ion-item>
+      </ion-list>
+      <ion-list *ngIf="Devolucion.value.tipo == 5">
+        <ion-item lines="none">
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          <ion-label class="font-weight-bold">Fecha:</ion-label>
+          <ion-label slot="end" class="no-margin-left">{{cajaService.cajaAbierta.cajaOpen.fechaAbierto | date: 'dd MMMM yyyy'}}</ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          <ion-label>Monto inicial $5:</ion-label>
+          <ion-badge class="badge-verde" slot="end">{{cajaService.cajaAbierta.cajaOpen.monto5 | currency: '$'}}</ion-badge>
+        </ion-item>
+        <ion-item >
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          <ion-label>Total devolución:</ion-label>
+          <ion-badge class="badge-rojo" slot="end">{{cajaService.cajaAbierta.cajaOpen.totaldevolucion5 | currency: '$'}}</ion-badge>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="calendar" slot="start"></ion-icon>
+          <ion-label class="font-weight-bold">Total monto $5:</ion-label>
+          <ion-badge class="badge-azul" slot="end">{{util.totalMonto5(cajaService.cajaAbierta.cajaOpen.monto5, cajaService.cajaAbierta.cajaOpen.totaldevolucion5) | currency: '$'}}</ion-badge>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <form [formGroup]="Devolucion" (ngSubmit)="enviar()">
+    <ion-card class="tarjeta">
+      <ion-card-header>
+        <ion-img src="/assets/images/Fondo-M.svg" ></ion-img>
+        <h5 class="ion-text-center font-weight-bold color-white">Formulario Devolucion</h5>
+      </ion-card-header>
+      <ion-card-content style="padding: 16px 16px 13px 16px">
+
+          <ion-list>
+            <ion-item>
+              <ion-icon name="calendar" slot="start"></ion-icon>
+              <ion-label position="floating">Fecha devuelto:</ion-label>
+              <ion-datetime formControlName="fecha" doneText="Aceptar" cancelText="Cancelar" displayFormat="DD de MMMM de YYYY" pickerFormat="DDDD MMMM YYYY"  max="2200" [monthNames]="util.nameMonth('name')" [monthShortNames]="util.nameMonth('nameSorth')" [dayNames]="util.nameDay('name')" [dayShortNames]="util.nameDay('nameSorth')"></ion-datetime>
+              <span>{{ getError('fecha') }}</span>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="cash" slot="start"></ion-icon>
+              <ion-label position="floating">Cantidad:</ion-label>
+              <ion-input formControlName="cantidad" type="number"></ion-input>
+              <span>{{ getError('cantidad') }}</span>
+            </ion-item>
+          </ion-list>
+      </ion-card-content>
+    </ion-card>
+    <div class="btn-submit">
+      <button class="ion-activatable" type="submit" [disabled]="Devolucion.invalid" [ngClass]="(opcion == util.operacion.AGREGAR) ? 'fondo-verde' : 'fondo-azul'">
+        <ion-icon name="checkmark"></ion-icon>
+        <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+      </button>
+    </div>
+  </form>
+</ion-content>

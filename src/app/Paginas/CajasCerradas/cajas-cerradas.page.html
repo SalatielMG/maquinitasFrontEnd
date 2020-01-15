@@ -1,0 +1,222 @@
+<ion-header mode='md'>
+  <ion-toolbar mode='md'>
+    <ion-buttons slot="start" >
+      <ion-menu-button mode="md"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Cajas Cerradas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button mode="md" class="btn-header" (click)="verificarDespliegueItemsSelectSearch(true)">
+        <ion-icon *ngIf="!cajaService.dataFiltros.isCollapse" name="arrow-forward" mode="ios"></ion-icon>
+        <ion-icon *ngIf="cajaService.dataFiltros.isCollapse" name="arrow-down" mode="ios"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-card class="tarjeta">
+      <ion-card-header>
+        <ion-item color="dark">
+          <ion-icon slot="start" name="options"></ion-icon>
+          <ion-label  position="stacked">Filtros:</ion-label>
+          <ion-select [(ngModel)]="cajaService.dataFiltrosSelect" placeholder="Seleccione los filtros" [interfaceOptions]="customAlertOptions" interface="alert" multiple  (ionChange)="itemsFiltrosSeleccionados()">
+            <ion-select-option *ngFor="let option of util.opcionesFiltrosCajasCerradas" [value]="option.value">{{option.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content #cntItemsBusqueda>
+        <ion-content>
+          <form [formGroup]="cajaService.dataFiltros.dataFiltros" (ngSubmit)="buscarCajasCerradas()">
+            <ion-list>
+              <ion-item *ngIf="getStatusEnabled('caja')">
+                <ion-icon name="archive" slot="start"></ion-icon>
+                <ion-label position="floating">Numero de caja:</ion-label>
+                <ion-input type="number" formControlName="caja"></ion-input>
+                <span>{{ getError('caja')}}</span>
+              </ion-item>
+              <ion-item *ngIf="getStatusEnabled('fechaAbierto')">
+                <ion-icon name="calendar" slot="start"></ion-icon>
+                <ion-label position="floating">Fecha Abierto:</ion-label>
+                <ion-datetime formControlName="fechaAbierto" doneText="Aceptar" cancelText="Cancelar" displayFormat="DD de MMMM de YYYY" pickerFormat="DDDD MMMM YYYY"  max="2200" [monthNames]="util.nameMonth('name')" [monthShortNames]="util.nameMonth('nameSorth')" [dayNames]="util.nameDay('name')" [dayShortNames]="util.nameDay('nameSorth')"></ion-datetime>
+                <span>{{ getError('fechaAbierto')}}</span>
+              </ion-item>
+              <div class="items-rango bg-dark-green" *ngIf="getStatusEnabled('rangoFechaAbierto')">
+                <h2 class="ion-text-center">Rango de fecha abierto caja</h2>
+                <div formArrayName="rangoFechaAbierto">
+                  <div formGroupName="0">
+                    <ion-item>
+                      <ion-icon name="calendar" slot="start"></ion-icon>
+                      <ion-label position="floating">Fecha Inicial:</ion-label>
+                      <ion-datetime formControlName="fechaInicial" doneText="Aceptar" cancelText="Cancelar" displayFormat="DD de MMMM de YYYY" pickerFormat="DDDD MMMM YYYY"  max="2200" [monthNames]="util.nameMonth('name')" [monthShortNames]="util.nameMonth('nameSorth')" [dayNames]="util.nameDay('name')" [dayShortNames]="util.nameDay('nameSorth')"></ion-datetime>
+                      <span>{{ getError('rangoFechaAbierto')}}</span>
+                    </ion-item>
+                    <ion-item>
+                      <ion-icon name="calendar" slot="start"></ion-icon>
+                      <ion-label position="floating">Fecha Final:</ion-label>
+                      <ion-datetime formControlName="fechaFinal" doneText="Aceptar" cancelText="Cancelar" displayFormat="DD de MMMM de YYYY" pickerFormat="DDDD MMMM YYYY" max="2200" [disabled]="cajaService.dataFiltros.dataFiltros.value.rangoFechaAbierto[0].fechaInicial.length == 0" [min]="cajaService.dataFiltros.dataFiltros.value.rangoFechaAbierto[0].fechaInicial" [monthNames]="util.nameMonth('name')" [monthShortNames]="util.nameMonth('nameSorth')" [dayNames]="util.nameDay('name')" [dayShortNames]="util.nameDay('nameSorth')"></ion-datetime>
+                      <span>{{ getError('rangoFechaAbierto')}}</span>
+                    </ion-item>
+                  </div>
+                </div>
+              </div>
+
+              <ion-item  *ngIf="getStatusEnabled('fechaCorte')">
+                <ion-icon name="calendar" slot="start"></ion-icon>
+                <ion-label position="floating">Fecha Corte:</ion-label>
+                <ion-datetime formControlName="fechaCorte" doneText="Aceptar" cancelText="Cancelar" displayFormat="DD de MMMM de YYYY" pickerFormat="DDDD MMMM YYYY"  max="2200" [monthNames]="util.nameMonth('name')" [monthShortNames]="util.nameMonth('nameSorth')" [dayNames]="util.nameDay('name')" [dayShortNames]="util.nameDay('nameSorth')"></ion-datetime>
+                <span>{{ getError('fechaCorte')}}</span>
+              </ion-item>
+              <div class="items-rango bg-dark-red" *ngIf="getStatusEnabled('rangoFechaCorte')">
+                <h2 class="ion-text-center">Rango de fecha corte caja</h2>
+                <div formArrayName="rangoFechaCorte">
+                  <div formGroupName="0">
+                    <ion-item>
+                      <ion-icon name="calendar" slot="start"></ion-icon>
+                      <ion-label position="floating">Fecha Inicial:</ion-label>
+                      <ion-datetime formControlName="fechaInicial" doneText="Aceptar" cancelText="Cancelar" displayFormat="DD de MMMM de YYYY" pickerFormat="DDDD MMMM YYYY"  max="2200" [monthNames]="util.nameMonth('name')" [monthShortNames]="util.nameMonth('nameSorth')" [dayNames]="util.nameDay('name')" [dayShortNames]="util.nameDay('nameSorth')"></ion-datetime>
+                      <span>{{ getError('rangoFechaCorte')}}</span>
+                    </ion-item>
+                    <ion-item>
+                      <ion-icon name="calendar" slot="start"></ion-icon>
+                      <ion-label position="floating">Fecha Final:</ion-label>
+                      <ion-datetime formControlName="fechaFinal" doneText="Aceptar" cancelText="Cancelar" displayFormat="DD de MMMM de YYYY" pickerFormat="DDDD MMMM YYYY" max="2200" [disabled]="cajaService.dataFiltros.dataFiltros.value.rangoFechaCorte[0].fechaInicial.length == 0" [min]="cajaService.dataFiltros.dataFiltros.value.rangoFechaCorte[0].fechaInicial" [monthNames]="util.nameMonth('name')" [monthShortNames]="util.nameMonth('nameSorth')" [dayNames]="util.nameDay('name')" [dayShortNames]="util.nameDay('nameSorth')"></ion-datetime>
+                      <span>{{ getError('rangoFechaCorte')}}</span>
+                    </ion-item>
+                  </div>
+                </div>
+              </div>
+              <ion-item *ngIf="getStatusEnabled('monto1')">
+                <ion-icon name="cash" slot="start"></ion-icon>
+                <ion-label position="floating">Monto inicial $1.00:</ion-label>
+                <ion-input type="number" formControlName="monto1"></ion-input>
+                <span>{{ getError('monto1')}}</span>
+              </ion-item>
+              <ion-item *ngIf="getStatusEnabled('monto5')">
+                <ion-icon name="cash" slot="start"></ion-icon>
+                <ion-label position="floating">Monto inicial $5.00:</ion-label>
+                <ion-input type="number" formControlName="monto5"></ion-input>
+                <span>{{ getError('monto5')}}</span>
+              </ion-item>
+            </ion-list>
+            <div class="btn-submit">
+              <button class="ion-activatable fondo-azul" type="submit" [disabled]="cajaService.dataFiltros.dataFiltros.invalid">
+                <ion-icon name="checkmark"></ion-icon>
+                <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+              </button>
+            </div>
+          </form>
+        </ion-content>
+      </ion-card-content>
+    </ion-card>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="recargarCajasCerradas($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown"
+    pulingText="Deslice para actualizar"
+    refreshingSpinner="circles"
+    refreshingText="Cargando datos de las cajas cerradas. ¡ Porfavor espere !">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+      <ion-card style="margin-bottom: 0px;" class="tarjeta" *ngFor="let cajaClose of cajaService.cajasCerradas; let i = index">
+          <ion-card-header>
+              <ion-item-sliding>
+                  <ion-item class="item-cajasCerradas">
+
+                      <ion-thumbnail slot="start">
+                          <ion-img src="/assets/images/Fondo.svg"></ion-img>
+                      </ion-thumbnail>
+                      <ion-row (click)="verCajaCerradas(cajaClose)">
+                          <ion-row>
+                              <ion-col size="11">
+                                  <h5><strong>Caja: {{cajaClose.id}}</strong></h5>
+                              </ion-col>
+                              <ion-col size="1" id="etiqueta">
+                                  <ion-icon name="pricetags" color="dark" *ngIf="cajaClose.nota != null"></ion-icon>
+                              </ion-col>
+                              <p><small>({{cajaClose.fechaAbierto | date: 'dd MMMM yyyy'}} al {{cajaClose.fechaCorte | date: 'dd MMMM yyyy'}})</small></p>
+                          </ion-row>
+                          <ion-row>
+                              <ion-col size="6">
+                                  <h6 class="label-concepts"><strong>Monto $1.00</strong></h6>
+                                  <h6 class="label-total">{{cajaClose.monto1 | currency: '$'}}</h6>
+                              </ion-col>
+                              <ion-col size="6">
+                                  <h6 class="label-concepts"><strong>Monto $5.00</strong></h6>
+                                  <h6 class="label-total">{{cajaClose.monto5 | currency: '$'}}</h6>
+                              </ion-col>
+                          </ion-row>
+                      </ion-row>
+
+                      <ion-button class="btn-header" slot="end" color="light" (click)="verificarDespliegueContentCajaClose(i)">
+                          <ion-icon *ngIf="cajaClose.cntAbierto == 0" name="arrow-forward" mode="ios"></ion-icon>
+                          <ion-icon *ngIf="cajaClose.cntAbierto == 1" name="arrow-down" mode="ios"></ion-icon>
+                      </ion-button>
+                  </ion-item>
+                  <ion-item-options side="start">
+                      <ion-item-option expandable class="fondo-azul" (click)="generarReporte(cajaClose.id, 5)">
+                        <img src="/assets/images/5.png"/>
+                      </ion-item-option>
+                  </ion-item-options>
+                  <ion-item-options side="end">
+                      <ion-item-option expandable class="fondo-azul" (click)="generarReporte(cajaClose.id, 1)">
+                          <img src="/assets/images/1.png"/>
+                      </ion-item-option>
+                  </ion-item-options>
+              </ion-item-sliding>
+          </ion-card-header>
+          <ion-card-content #cntCajaCerrada id="content-caja">
+              <ion-list>
+                  <ion-item lines="none">
+                      <ion-icon name="cash" slot="start"></ion-icon>
+                      <ion-label>Monto inicial <strong>$1.00:</strong></ion-label>
+                      <ion-badge slot="end" class="badge-verde">{{cajaClose.monto1 | currency: '$'}}</ion-badge>
+                  </ion-item>
+                  <ion-item lines="none">
+                      <ion-icon name="cash" slot="start"></ion-icon>
+                      <ion-label>Total devolución:</ion-label>
+                      <ion-badge slot="end" class="badge-rojo">{{cajaClose.totaldevolucion1 | currency: '$'}}</ion-badge>
+                  </ion-item>
+                  <ion-item>
+                      <ion-icon name="cash" slot="start"></ion-icon>
+                      <ion-label>Total gastos:</ion-label>
+                      <ion-badge slot="end" class="badge-rojo">{{cajaClose.totalgastos | currency: '$'}}</ion-badge>
+                  </ion-item>
+                  <ion-item lines="none">
+                      <ion-icon name="cash" slot="start"></ion-icon>
+                      <ion-label class="font-weight-bold">Total monto $1.00:</ion-label>
+                      <ion-badge slot="end" class="badge-azul">{{util.totalMonto1(cajaClose.monto1, cajaClose.totaldevolucion1, cajaClose.totalgastos) | currency: '$'}}</ion-badge>
+                  </ion-item>
+              </ion-list>
+              <ion-list>
+                  <ion-item lines="none">
+                      <ion-icon name="cash" slot="start"></ion-icon>
+                      <ion-label>Monto inicial <strong>$5.00:</strong></ion-label>
+                      <ion-badge slot="end" class="badge-verde">{{cajaClose.monto5 | currency: '$'}}</ion-badge>
+                  </ion-item>
+                  <ion-item>
+                      <ion-icon name="cash" slot="start"></ion-icon>
+                      <ion-label>Total devolución:</ion-label>
+                      <ion-badge slot="end" class="badge-rojo">{{cajaClose.totaldevolucion5 | currency: '$'}}</ion-badge>
+                  </ion-item>
+                  <ion-item lines="none">
+                      <ion-icon name="cash" slot="start"></ion-icon>
+                      <ion-label class="font-weight-bold">Total monto $5.00:</ion-label>
+                      <ion-badge slot="end" class="badge-azul">{{util.totalMonto5(cajaClose.monto5, cajaClose.totaldevolucion5) | currency: '$'}}</ion-badge>
+                  </ion-item>
+              </ion-list>
+          </ion-card-content>
+      </ion-card>
+  </ion-list>
+
+  <div *ngIf="cajaService.cajasCerradas.length == 0" class="ion-padding">
+    <h5 class="ion-text-center ion-text-wrap font-weight-bold">{{cajaService.msj}}</h5>
+  </div>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="cargarDatosInifiniteScroll($event)">
+    <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Cargando más cajas cerradas">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

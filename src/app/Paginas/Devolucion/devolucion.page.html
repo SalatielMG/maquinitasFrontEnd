@@ -1,0 +1,111 @@
+<ion-header mode='md'>
+  <ion-toolbar mode='md'>
+    <ion-buttons slot="start" >
+      <ion-menu-button mode="md"></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="title-page-left">Devoluciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="recargarDevoluciones($event)">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Deslice para actualizar"
+            refreshingSpinner="circles"
+            refreshingText="Cargando devoluciones del monto de ${{tipoDevolucion}}.00. ¡ Porfavor espere !">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-segment [(ngModel)]="tipoDevolucion" (ionChange)="cargarDevoluciones()">
+    <ion-segment-button value="1">
+      <ion-icon name="cash"></ion-icon>
+      <ion-label>$1.00</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="5">
+      <ion-icon name="cash"></ion-icon>
+      <ion-label>$5.00</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="tipoDevolucion">
+
+    <div *ngSwitchCase="1">
+      <ion-list>
+        <ion-item-sliding *ngFor="let devolucion1 of devolucionService.Devoluciones1; let i = index">
+          <ion-item detail class="item-devolucion" (click)="verDevolucion(devolucion1)">
+            <ion-thumbnail slot="start">
+              <ion-img src="assets/images/Fondo.svg"></ion-img>
+            </ion-thumbnail>
+            <ion-row>
+              <h5><strong>{{devolucion1.fecha | date: 'dd MMMM yyyy'}}</strong></h5>
+              <ion-row>
+                <ion-col size="5">
+                  <h6><strong>Cantidad: </strong></h6>
+                </ion-col>
+                <ion-col size="7">
+                  <h6>{{devolucion1.cantidad | currency: '$'}}</h6>
+                </ion-col>
+              </ion-row>
+            </ion-row>
+          </ion-item>
+          <ion-item-options side="start">
+            <ion-item-option (click)="eliminarDevolucion(devolucion1, i)" expandable class="fondo-rojo">
+              <ion-icon name="trash" slot="icon-only"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+          <ion-item-options side="end">
+            <ion-item-option (click)="abrirModal(util.operacion.ACTUALIZAR, devolucion1, i)" expandable class="fondo-azul">
+              <ion-icon name="create" slot="icon-only"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+      <div *ngIf="devolucionService.Devoluciones1.length == 0" class="ion-padding">
+        <h5 class="ion-text-center ion-text-wrap font-weight-bold">{{devolucionService.msj}}</h5>
+      </div>
+    </div>
+
+    <div *ngSwitchCase="5">
+      <ion-list>
+        <ion-item-sliding *ngFor="let devolucion5 of devolucionService.Devoluciones5; let i = index">
+          <ion-item detail class="item-devolucion" (click)="verDevolucion(devolucion5)">
+            <ion-thumbnail slot="start">
+              <ion-img src="assets/images/Fondo.svg"></ion-img>
+            </ion-thumbnail>
+            <ion-row >
+              <h5><strong>{{devolucion5.fecha | date: 'dd MMMM yyyy'}}</strong></h5>
+              <ion-row>
+                <ion-col size="5">
+                  <h6><strong>Cantidad: </strong></h6>
+                </ion-col>
+                <ion-col size="7">
+                  <h6>{{devolucion5.cantidad | currency: '$'}}</h6>
+                </ion-col>
+              </ion-row>
+            </ion-row>
+
+          </ion-item>
+          <ion-item-options side="start">
+            <ion-item-option (click)="eliminarDevolucion(devolucion5, i)" expandable="true" class="fondo-rojo">
+              <ion-icon name="trash" slot="icon-only"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+          <ion-item-options side="end">
+            <ion-item-option (click)="abrirModal(util.operacion.ACTUALIZAR, devolucion5, i)" expandable="true" class="fondo-azul">
+              <ion-icon name="create" slot="icon-only"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+      <div *ngIf="devolucionService.Devoluciones5.length == 0" class="ion-padding">
+        <h5 class="ion-text-center ion-text-wrap font-weight-bold">{{devolucionService.msj}}</h5>
+      </div>
+    </div>
+
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="abrirModal()" class="btn-floating-verde">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

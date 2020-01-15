@@ -1,0 +1,124 @@
+  ion-header {
+    ion-toolbar {
+      ion-card {
+        margin: 0;
+        ion-card-header {
+          height: 100%;
+          padding: 0 5px 5px 5px;
+          ion-item {
+            --background: rgba(255, 255, 255, 0.13);
+            border-radius: 5px;
+          }
+        }
+        ion-card-content {
+          ion-content {
+            --background: transparent;
+            ion-list {
+              background-color: transparent;
+              ion-item {
+                border-radius: 10px;
+                margin-bottom: 10px;
+                --background: #ffffff !important;
+                ion-icon {
+                  color: #555555 !important;
+                }
+                ion-label, ion-input, ion-datetime, ion-select, ion-textarea {
+                  color: #000000 !important;
+                }
+                span {
+                  color: #f00000;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .btn-submit {
+    margin-top: 10px !important;
+  }
+
+  .items-rango {
+    padding: 10px 10px 1px 10px;
+    border-radius: 10px!important;
+    margin-bottom: 10px;
+
+    h2, h4, h5, h6 {
+      margin: 25px;
+      font-weight: bold;
+      color: white;
+    }
+
+  }
+
+  .bg-dark-green {
+    background: darkgreen;
+  }
+
+  .bg-dark-red {
+    background: darkred;
+  }
+
+  .tarjeta {
+    ion-card-header {
+      background: transparent!important;
+      height: 100%!important;
+    }
+  }
+  .item-cajasCerradas {
+
+    ion-thumbnail {
+      margin-right: 12px;
+      margin-left: -2px;
+      ion-img {
+        border-radius: 50%;
+        filter: saturate(2.3);
+        box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.15), 1px 2px 3px rgba(0, 0, 0, 0.30);
+      }
+    }
+    ion-row {
+      width: 100%;
+      h6, h5 {
+        position: initial;
+      }
+      ion-row {
+        #etiqueta {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        width: 100%;
+        h5 {
+          margin-bottom: 0;
+        }
+        p {
+          margin: 0;
+        }
+      }
+      ion-row {
+        width: 100%;
+        ion-col {
+          margin-top: 0;
+          margin-left: -5px;
+          .label-concepts {
+            margin-top: 7px;
+            margin-bottom: 2px;
+          }
+          .label-total {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+    ion-button {
+      width: 40px!important;
+      height: 40px!important;
+      top: 37px;
+      right: 2px;
+      ion-icon {
+        margin-right: 0 !important;
+      }
+    }
+  }

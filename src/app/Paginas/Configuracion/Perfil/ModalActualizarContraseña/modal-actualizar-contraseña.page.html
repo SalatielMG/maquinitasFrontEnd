@@ -1,0 +1,41 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md">
+    <ion-title class="title-page-right">Actualizar Contraseña</ion-title>
+    <ion-buttons slot="end">
+      <ion-button mode="md" (click)="cerrarModal()" class="btn-header">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="modal-formulario">
+    <div id="img-key">
+      <ion-icon name="key" class="box-shadow-img filter-img"></ion-icon>
+      <!--img src="/assets/images/user-login.svg"-->
+    </div>
+    <div id="content-update">
+      <form [formGroup]="password" (ngSubmit)="actualizarPassword()">
+        <ion-list>
+          <ion-item>
+            <ion-icon color="light" name="key" slot="start"></ion-icon>
+            <ion-label position="floating">Nueva contraseña</ion-label>
+            <ion-input type="password" formControlName="newPassword" (change)="util.valueNewPassword(password.value.newPassword)"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-icon color="light" name="repeat" slot="start"></ion-icon>
+            <ion-label position="floating">Confirmar nueva contraseña</ion-label>
+            <ion-input [readonly]="password.value.newPassword == ''" type="password" formControlName="confirmNewPassword"></ion-input>
+          </ion-item>
+        </ion-list>
+        <div>
+          <button class="ion-activatable fondo-azul" type="submit" [disabled]="password.invalid">
+            <ion-icon name="checkmark"></ion-icon>
+            <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,52 @@
+<ion-header mode='md'>
+  <ion-toolbar mode='md'>
+    <ion-title class="title-page-right">
+      {{opcion}} {{(opcion == util.operacion.AGREGAR) ? 'nueva caja' : 'caja: ' + cajaService.cajaAbierta.cajaOpen.id }}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button mode="md" (click)="cerrarModal()" class="btn-header">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="modal-formulario">
+    <div class="img-caja">
+      <div class="box-shadow-img filter-img icon-caja img-rounded">
+        <ion-icon name="archive"></ion-icon>
+      </div>
+    </div>
+    <div id="content-update">
+      <form [formGroup]="Caja" (ngSubmit)="enviarDatos()">
+        <ion-list>
+          <ion-item>
+            <ion-icon color="light" name="calendar" slot="start"></ion-icon>
+            <ion-label position="floating">Fecha abierto:</ion-label>
+            <ion-datetime formControlName="fechaAbierto" doneText="Aceptar" cancelText="Cancelar" displayFormat="DD de MMMM de YYYY" pickerFormat="DDDD MMMM YYYY"  max="2200" [monthNames]="util.nameMonth('name')" [monthShortNames]="util.nameMonth('nameSorth')" [dayNames]="util.nameDay('name')" [dayShortNames]="util.nameDay('nameSorth')"></ion-datetime>
+            <span>{{ getError('fechaAbierto')}}</span>
+          </ion-item>
+          <ion-item>
+            <ion-icon color="light" name="cash" slot="start"></ion-icon>
+            <ion-label position="floating">Monto inicial $1.00:</ion-label>
+            <ion-input type="number" formControlName="monto1"></ion-input>
+            <span>{{ getError('monto1')}}</span>
+          </ion-item>
+          <ion-item>
+            <ion-icon color="light" name="cash" slot="start"></ion-icon>
+            <ion-label position="floating">Monto inicial $5.00:</ion-label>
+            <ion-input type="number" formControlName="monto5"></ion-input>
+            <span>{{ getError('monto5')}}</span>
+          </ion-item>
+        </ion-list>
+        <div>
+          <button class="ion-activatable" type="submit" [disabled]="Caja.invalid" [ngClass]="(opcion == util.operacion.AGREGAR) ? 'fondo-verde' : 'fondo-azul'">
+            <ion-icon name="checkmark"></ion-icon>
+            <ion-ripple-effect type="unbounded"></ion-ripple-effect>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

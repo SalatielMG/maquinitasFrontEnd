@@ -1,0 +1,105 @@
+<ion-header mode='md'>
+  <ion-toolbar mode='md'>
+    <ion-buttons slot="start" >
+      <ion-menu-button mode="md"></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="title-page-left">Caja abierta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="recargarDatosCajaAbierta($event)">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Deslice para actualizar"
+            refreshingSpinner="circles"
+            refreshingText="Cargando datos de la caja abierta. ¡ Porfavor espere !">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="cajaService.cajaAbierta.isOpen">
+    <h5 class="ion-text-center ion-text-wrap font-weight-bold">Caja: {{cajaService.cajaAbierta.cajaOpen.id}}</h5>
+    <ion-item class="ion-text-center bg-transparent" lines="none" margin-bottom="20px">
+      <ion-label>
+        <strong>Fecha recibido:</strong> {{cajaService.cajaAbierta.cajaOpen.fechaAbierto | date: 'dd MMMM yyyy'}}
+      </ion-label>
+    </ion-item>
+    <ion-card class="tarjeta">
+      <ion-card-header>
+        <ion-img src="/assets/images/Fondo-M.svg" ></ion-img>
+        <h6 class="ion-text-center font-weight-bold color-white">Monto $1.00</h6>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item lines="none">
+            <ion-icon name="cash" slot="start"></ion-icon>
+            <ion-label>Monto de $1.00:</ion-label>
+            <ion-badge class="badge-verde" slot="end">{{cajaService.cajaAbierta.cajaOpen.monto1 | currency: '$'}}</ion-badge>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon name="cash" slot="start"></ion-icon>
+            <ion-label>Total devoluciones:</ion-label>
+            <ion-badge class="badge-rojo" slot="end">{{cajaService.cajaAbierta.cajaOpen.totaldevolucion1 | currency: '$'}}</ion-badge>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="cash" slot="start"></ion-icon>
+            <ion-label>Total gastos:</ion-label>
+            <ion-badge class="badge-rojo" slot="end">{{cajaService.cajaAbierta.cajaOpen.totalgastos | currency: '$'}}</ion-badge>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon name="cash" slot="start"></ion-icon>
+            <ion-label>Total monto:</ion-label>
+            <ion-badge class="badge-azul" slot="end">{{util.totalMonto1(cajaService.cajaAbierta.cajaOpen.monto1, cajaService.cajaAbierta.cajaOpen.totaldevolucion1, cajaService.cajaAbierta.cajaOpen.totalgastos) | currency: '$'}}</ion-badge>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="tarjeta" style="margin-bottom: 100px">
+      <ion-card-header>
+        <ion-img src="/assets/images/Fondo-M.svg" ></ion-img>
+        <h6 class="ion-text-center font-weight-bold color-white">Monto $5.00</h6>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item lines="none">
+            <ion-icon name="cash" slot="start"></ion-icon>
+            <ion-label>Monto de $5.00:</ion-label>
+            <ion-badge class="badge-verde" slot="end">{{cajaService.cajaAbierta.cajaOpen.monto5 | currency: '$'}}</ion-badge>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="cash" slot="start"></ion-icon>
+            <ion-label>Total devoluciones:</ion-label>
+            <ion-badge class="badge-rojo" slot="end">{{cajaService.cajaAbierta.cajaOpen.totaldevolucion5 | currency: '$'}}</ion-badge>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-icon name="cash" slot="start"></ion-icon>
+            <ion-label>Total monto:</ion-label>
+            <ion-badge class="badge-azul" slot="end">{{util.totalMonto5(cajaService.cajaAbierta.cajaOpen.monto5, cajaService.cajaAbierta.cajaOpen.totaldevolucion5) | currency: '$'}}</ion-badge>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+
+  <div *ngIf="!cajaService.cajaAbierta.isOpen" class="ion-padding">
+    <h5 class="ion-text-center ion-text-wrap font-weight-bold">{{cajaService.msj}}</h5>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="!cajaService.cajaAbierta.isOpen">
+    <ion-fab-button (click)="abrirModal()" class="btn-floating-verde">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="cajaService.cajaAbierta.isOpen">
+    <ion-fab-button class="btn-floating-azul">
+      <ion-icon name="arrow-dropup"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button color="secondary" (click)="abrirModal(util.operacion.ACTUALIZAR)">
+        <ion-icon name="create"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="danger" (click)="cerrarCaja()">
+        <ion-icon name="close"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>

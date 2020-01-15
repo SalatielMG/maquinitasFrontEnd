@@ -1,0 +1,53 @@
+<ion-header mode="md">
+  <ion-toolbar mode="md">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="title-page-left">Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="recargarPerfil($event)">
+    <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Deslice para actualizar"
+            refreshingSpinner="circles"
+            refreshingText="Cargando datos. ¡ Porfavor espere !">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div class="div-perfil">
+    <div id="logo-perfil">
+      <img [src]="rutaFoto(usuarioService.usuarioSession.usuario.imagen)" class="box-shadow-img filter-img" (click)="tomarFoto()">
+      <h3 class="ion-text-center">Maquinitas</h3>
+    </div>
+    <div id="content-perfil">
+      <ion-item>
+        <ion-icon color="light" name="person" slot="start"></ion-icon>
+        <ion-label position="stacked">Usuario</ion-label>
+        <ion-input type="text" [value]="usuarioService.usuarioSession.usuario.usuario" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-icon color="light" name="mail" slot="start"></ion-icon>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input type="email" [value]="usuarioService.usuarioSession.usuario.email" readonly></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-icon color="light" name="logo-ionic" slot="start"></ion-icon>
+        <ion-label position="stacked">Tipo</ion-label>
+        <ion-input type="email" [value]="usuarioService.tipoUsuario()" readonly></ion-input>
+      </ion-item>
+    </div>
+  </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button class="btn-floating-azul">
+      <ion-icon name="create"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-fab-button color="secondary" mode="ios" (click)="updateProfile(usuarioService.usuarioSession.usuario.email, usuarioService.usuarioSession.usuario.usuario)"><ion-icon name="mail"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+    <ion-fab-list side="top">
+      <ion-fab-button color="tertiary" mode="ios" (click)="confirmPasswordCurrent()"><ion-icon name="key" ></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>

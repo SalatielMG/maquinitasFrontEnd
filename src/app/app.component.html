@@ -1,3 +1,43 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-split-pane contentId="menu-content">
+    <ion-menu type="overlay" contentId="menu-content" menuId="menu-Maquinitas" [disabled]="!usuarioService.sesionAbierta()">
+      <ion-header mode="md">
+        <ion-toolbar mode="md">
+          <ion-title>Menu</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <div class="img-content-desenfoque">
+          <ion-img src="/assets/images/Fondo.svg" class="desenfoque"></ion-img>
+        </div>
+        <div class="position-0">
+          <ion-item lines="none">
+            <ion-thumbnail slot="start">
+              <img [src]="rutaFoto(usuarioService.usuarioSession.usuario.imagen)" class="filter-img box-shadow-img border-radius-50"/>
+            </ion-thumbnail>
+            <ion-label >
+              <h4 class="ion-text-right"><strong>{{ usuarioService.usuarioSession.usuario.usuario }}</strong></h4>
+              <ion-col>
+                <h5 class="ion-text-wrap ion-text-end font-weight-500" style="color: #d7d8da;">{{usuarioService.usuarioSession.usuario.email}}</h5>
+                <p class="ion-text-end font-weight-ligth">{{usuarioService.tipoUsuario()}}</p>
+              </ion-col>
+            </ion-label>
+          </ion-item>
+        </div>
+        <ion-list>
+          <ion-menu-toggle auto-hide="false" *ngFor="let page of appPages">
+            <ion-item
+                    [routerDirection]="'root'"
+                    [routerLink]="[page.url]"
+                    [disabled]="!cajaService.cajaAbierta.isOpen && (page.url != '/home' && page.url != '/caja' && page.url != '/cajasCerradas' && page.url != '/configuracion')"
+                    detail>
+              <ion-icon slot="start" [name]="page.icon"></ion-icon>
+              <ion-label class="ion-margin-top ion-margin-bottom"> {{page.title}} </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="menu-content"></ion-router-outlet>
+  </ion-split-pane>
 </ion-app>
