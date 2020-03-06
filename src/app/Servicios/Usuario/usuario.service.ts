@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
 import { Observable } from 'rxjs';
 const { Storage } = Plugins;
@@ -16,8 +15,7 @@ export class UsuarioService {
   public usuarioSession = new UsuarioSession();
 
   constructor(private httpClient: HttpClient,
-              private router: Router,
-              private platform: Platform) {
+              private router: Router) {
     this.obtenerUsuarioSessionStorage();
   }
 
@@ -41,24 +39,15 @@ export class UsuarioService {
   }
 
   public async obtenerUsuarioSessionStorage() {
-    let value;
-    if (this.platform.is('capacitor')) {
-      value = { value } = await Storage.get({key: 'usuarioSession'});
-    } else {
-      value = await localStorage.getItem('usuarioSession');
-    }
+    const { value } = await Storage.get({key: 'usuarioSession'});
     this.usuarioSession = (value != null) ? JSON.parse(value) : new UsuarioSession();
   }
 
   public async actualizarUsuarioSessionStorage() {
-    if (this.platform.is('capacitor')) {
-      await Storage.set({
-        key: 'usuarioSession',
-        value: JSON.stringify(this.usuarioSession)
-      });
-    } else {
-      await localStorage.setItem('usuarioSession', JSON.stringify(this.usuarioSession));
-    }
+    await Storage.set({
+      key: 'usuarioSession',
+      value: JSON.stringify(this.usuarioSession)
+    });
   }
 
   public logout() {
@@ -66,6 +55,12 @@ export class UsuarioService {
     this.actualizarUsuarioSessionStorage().then(() => {
       this.router.navigate(['/login']);
     });
+  }
+
+  public cerrarSesion(): Observable<any> {
+    return this.httpClient.post(URL + 'usuario/logout', new HttpParams()
+        .append('id', this.usuarioSession.usuario.id.toString())
+        .append('token', this.usuarioSession.usuario.token));
   }
 
   public login(data): Observable<any> {

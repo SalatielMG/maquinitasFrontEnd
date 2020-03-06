@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { LoadingController, ToastController } from '@ionic/angular';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { errorInterno, exprRegEmail, nameMonth, dayName, operacion, opcionesFiltrosCajasCerradas } from './contantes';
+import {UsuarioSesionService} from '../Usuario/usuario-sesion.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class UtileriasService {
   constructor(private loadCtrl: LoadingController,
               private toastController: ToastController,
               private datePipe: DatePipe,
-              private currencyPipe: CurrencyPipe) {
-
+              private currencyPipe: CurrencyPipe,
+              private userSesionservice: UsuarioSesionService) {
   }
 
   public nameMonth(key: string) {
@@ -47,26 +48,39 @@ export class UtileriasService {
   public async msjToast(msj: string, titulo: string, error: boolean, detenerLoading = true) {
     if (detenerLoading) this.detenerLoading();
     const toast = await this.toastController.create({
-      header: titulo,
+      //header: titulo,
       message: msj,
       position: 'top',
-      color: (error) ? 'danger' : 'success',
-      duration: (error) ? 3000 : 1500,
+      //color: (error) ? 'danger' : 'success',
+      duration: (error) ? 4000 : 1500,
       mode: 'ios',
-      cssClass: 'toast-personal'
+      cssClass: (error) ? 'toast-danger' : 'toast-success'
     });
     toast.present();
+    if (error && titulo === "¡ Dispositivo desvinculado !") {
+        setTimeout(() =>  {
+            this.crearLoading('Cerrando sesión').then(() => {
+                this.userSesionservice.closeSesion().subscribe(result => {
+                    this.detenerLoading();
+                    this.userSesionservice.logoutSesion();
+                }, error => {
+                    this.msjToastErrorInterno(error.message);
+                });
+            });
+        }, 500);
+    }
+
   }
   public async msjToastErrorInterno(msjError, detenerLoading = true) {
     console.log('Error interno', msjError);
     if (detenerLoading) this.detenerLoading();
     const toast = await this.toastController.create({
       header: errorInterno.titulo,
-      message: errorInterno.msj + msjError,
+      message: errorInterno.msj,
       position: 'top',
-      color: 'warning',
+      //color: 'warning',
       mode: 'ios',
-      duration: 5000,
+      cssClass: 'toast-warning',
       buttons: [
         {
           role: 'cancel',
@@ -87,7 +101,21 @@ export class UtileriasService {
     return exprRegEmail.test(email);
   }
   public obtFechaActual() {
-    return new Date().toISOString().substr(0, 10);
+    //2020-01-31
+    const today = new Date();
+    /*console.log(today.getFullYear() + "-" + (today.getMonth() + 1 ) + "-" + today.getDate());
+    console.log("Date.now()", Date.now());
+    console.log("new Date()", new Date());
+    console.log("new Date().toLocaleString()", new Date().toLocaleString());
+    console.log("new Date().toLocaleTimeString()", new Date().toLocaleTimeString());
+    console.log("new Date().toLocaleDateString()", new Date().toLocaleDateString());
+    console.log("new Date().toISOString()", new Date().toISOString());
+    console.log("new Date().toISOString().substr(0, 10)", new Date().toISOString().substr(0, 10));*/
+    return today.getFullYear() + "-" + this.formatDateNumber(today.getMonth() + 1 ) + "-" + this.formatDateNumber(today.getDate());
+    //return new Date().toISOString().substr(0, 10);
+  }
+  private formatDateNumber(date: number): string {
+    return (date < 10) ? "0" + date : date.toString();
   }
   public regex_MaxLengthNumber(lenght) {
     return "([0-9]{1," + lenght + "})";

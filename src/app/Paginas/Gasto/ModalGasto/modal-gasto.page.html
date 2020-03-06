@@ -69,7 +69,7 @@
           <ion-item>
             <ion-icon name="archive" slot="start"></ion-icon>
             <ion-label position="stacked">Tipo:</ion-label>
-            <ion-select placeholder="Selecciona un tipo de gasto" formControlName="tipo">
+            <ion-select placeholder="Selecciona un tipo de gasto" formControlName="tipo" cancelText="Cancelar" okText="Elegir">
               <ion-select-option *ngFor="let tipo of tiposGastosService.tiposGasto.tiposGasto" [value]="tipo.id">{{tipo.nombre}}</ion-select-option>
             </ion-select>
             <span>{{ getError('tipo') }}</span>

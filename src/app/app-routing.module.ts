@@ -20,7 +20,7 @@ const routes: Routes = [
     loadChildren: () => import('./Paginas/Caja/caja.module').then(m => m.CajaPageModule)
   },
   {
-    path: 'tipoDevolucion',
+    path: 'devolucion',
     canActivate: [IsSessionActiveGuard, IsCajaOpenGuard],
     loadChildren: () => import('./Paginas/Devolucion/devolucion.module').then(m => m.DevolucionPageModule)
   },

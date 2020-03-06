@@ -11,10 +11,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { ConfirmNewPasswordDirective } from './Validaciones/ConfirmNewPassword/confirm-new-password.directive';
-import localeEs from '@angular/common/locales/es-MX';
-import { registerLocaleData } from '@angular/common';
-registerLocaleData(localeEs);
-
+import localeMX from '@angular/common/locales/es-MX';
+import { registerLocaleData, HashLocationStrategy, LocationStrategy } from '@angular/common';
+registerLocaleData(localeMX);
 
 @NgModule({
   declarations: [AppComponent, ConfirmNewPasswordDirective],
@@ -26,12 +25,13 @@ registerLocaleData(localeEs);
     HttpClientModule,
   ],
   providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: LOCALE_ID, useValue: 'es-MX' },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     DatePipe,
     CurrencyPipe,
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: LOCALE_ID, useValue: 'es-MX' },
   ],
   bootstrap: [AppComponent]
 })

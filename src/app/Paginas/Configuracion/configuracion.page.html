@@ -8,11 +8,23 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="recargarConfigMultipleSession($event)">
+      <ion-refresher-content
+              pullingIcon="arrow-dropdown"
+              pulingText="Deslice para actualizar la configuración de sesiones multiples"
+              refreshingSpinner="circles"
+              refreshingText="Cargando configuración de sesiones multiples. ¡ Porfavor espere !"></ion-refresher-content>
+  </ion-refresher>
   <ion-list>
     <ion-item (click)="cambiarTema()">
       <ion-icon name="moon" slot="start"></ion-icon>
       <ion-label class="ion-margin-bottom ion-margin-top">Tema Oscuro</ion-label>
       <ion-toggle slot="end" [checked]="configuracionService.configuracion.modeDark"></ion-toggle>
+    </ion-item>
+    <ion-item (click)="cambiarSesionMultiple()">
+      <ion-icon name="logo-buffer" slot="start"></ion-icon>
+      <ion-label class="ion-margin-bottom ion-margin-top">Sesiones multiples</ion-label>
+      <ion-toggle slot="end" [checked]="configuracionService.configuracion.multipleSesion"></ion-toggle>
     </ion-item>
     <ion-item disabled>
       <ion-icon name="cash" slot="start"></ion-icon>

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Configuracion } from '../../Modelos/Configuracion/configuracion';
-import { Platform } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import { URL } from '../Utilerias/app.config';
 const { Storage } = Plugins;
 
 @Injectable({
@@ -9,26 +11,26 @@ const { Storage } = Plugins;
 })
 export class ConfiguracionService {
   public configuracion = new Configuracion();
-  constructor(private platform: Platform) {
+  constructor(private httpClient: HttpClient) {
     this.obtenerConfiguracionStorage();
   }
   public async obtenerConfiguracionStorage() {
-    let value;
-    if (this.platform.is('capacitor')) {
-      value = { value } = await Storage.get({key: 'configuracion'});
-    } else {
-      value = await localStorage.getItem('configuracion');
-    }
+    const { value } = await Storage.get({key: 'configuracion'});
     this.configuracion = (value != null) ? JSON.parse(value) : new Configuracion();
   }
   public async actualizarConfiguracionStorage() {
-    if (this.platform.is('capacitor')) {
-      await Storage.set({
-        key: 'configuracion',
-        value: JSON.stringify(this.configuracion)
-      });
-    } else {
-      await localStorage.setItem('configuracion', JSON.stringify(this.configuracion));
-    }
+    await Storage.set({
+      key: 'configuracion',
+      value: JSON.stringify(this.configuracion)
+    });
+  }
+  public actualizarMultipleSession(data): Observable<any> {
+    return this.httpClient.post(URL + 'configuracion/actualizarMultipleSession', new HttpParams()
+        .append('dataSession', JSON.stringify(data)));
+  }
+  public obtenerMultipleSession(idUsuario): Observable<any> {
+    return this.httpClient.get(URL + 'configuracion/obtenerMultipleSession', {params: {
+      idUsuario: idUsuario
+      }});
   }
 }

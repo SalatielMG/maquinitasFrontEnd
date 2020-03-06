@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {ModalController, NavParams} from '@ionic/angular';
 import { CajaService } from '../../../Servicios/Caja/caja.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';

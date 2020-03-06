@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Platform } from '@ionic/angular';
 import { Plugins } from '@capacitor/core';
 const { Storage } = Plugins;
 import { URL } from '../Utilerias/app.config';
@@ -28,8 +27,7 @@ export class CajaService {
   //Variables Cajas Cerradas
 
   constructor(private httpClient: HttpClient,
-              private router: Router,
-              private platform: Platform) {
+              private router: Router) {
     this.obtenerCajaAbiertaStorage();
   }
 
@@ -49,22 +47,13 @@ export class CajaService {
   }
 
   public async actualizarCajaAbiertaStorage() {
-    if (this.platform.is('capacitor')) {
-      await Storage.set({
-        key: 'cajaAbierta',
-        value: JSON.stringify(this.cajaAbierta)
-      });
-    } else {
-      await localStorage.setItem('cajaAbierta', JSON.stringify(this.cajaAbierta));
-    }
+    await Storage.set({
+      key: 'cajaAbierta',
+      value: JSON.stringify(this.cajaAbierta)
+    });
   }
   public async obtenerCajaAbiertaStorage() {
-    let value;
-    if (this.platform.is('capacitor')) {
-      value = { value } = await Storage.get({ key: 'cajaAbierta' });
-    } else {
-      const value = await localStorage.getItem('cajaAbierta');
-    }
+    const { value } = await Storage.get({ key: 'cajaAbierta' });
     this.cajaAbierta = (value != null) ? JSON.parse(value) : new CajaAbierta();
   }
 

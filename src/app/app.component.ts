@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
-
-import { Platform } from '@ionic/angular';
+import { Component, OnDestroy } from '@angular/core';
+import {AlertController, ModalController, Platform} from '@ionic/angular';
 import { Plugins, StatusBarStyle } from '@capacitor/core';
 import { UsuarioService } from './Servicios/Usuario/usuario.service';
 import { Router } from '@angular/router';
@@ -13,7 +12,10 @@ import { URL } from './Servicios/Utilerias/app.config';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
+
+  backButtonSubscription;
+
   public appPages = [
     {
       title: 'Home',
@@ -27,7 +29,7 @@ export class AppComponent {
     },
     {
       title: 'Devoluciones',
-      url: '/tipoDevolucion',
+      url: '/devolucion',
       icon: 'backspace'
     },
     {
@@ -51,7 +53,9 @@ export class AppComponent {
     public usuarioService: UsuarioService,
     public cajaService: CajaService,
     private router: Router,
-    private configuracionService: ConfiguracionService
+    private configuracionService: ConfiguracionService,
+    private alertController: AlertController,
+    private modalController: ModalController
   ) {
     this.initializeApp().then(() => {
       if (this.configuracionService.configuracion.modeDark) {
@@ -70,19 +74,71 @@ export class AppComponent {
   async initializeApp() {
     const { SplashScreen, StatusBar } = Plugins;
     try {
+      this.backButtonEvent();
       await SplashScreen.hide();
       await StatusBar.setStyle({ style: StatusBarStyle.Dark });
-      if (this.platform.is('capacitor')) {
+      if (this.platform.is('android') || this.platform.is('ios')) {
         StatusBar.setBackgroundColor({ color: '#000000' });
       }
-      console.log('App iniciada en movil');
+      //console.log('App iniciada en movil');
     } catch (e) {
-      console.log('Aplicación inicada en el navegador', e);
+      //this.backButtonEvent();
+      //console.log('Aplicación inicada en el navegador', e);
     }
   }
 
   public rutaFoto(name): string {
     return URL + "avatar/" + name;
+  }
+
+  ngOnDestroy(): void {
+    this.backButtonSubscription.unsubscribe();
+  }
+
+  private backButtonEvent() {
+    console.log(this.router.isActive('/devolucion', true));
+    this.backButtonSubscription = this.platform.backButton.subscribe(async () => {
+      if (this.router.url == '/home'
+      || this.router.url == '/caja'
+      || this.router.url == '/devolucion'
+      || this.router.url == '/gasto'
+      || this.router.url == '/cajasCerradas'
+      || this.router.url == '/configuracion'
+      || this.router.url == '/login'
+      ) {
+        this.modalController.getTop().then(top => {
+          this.alertController.getTop().then(t => {
+            if (top == undefined && t == undefined) {
+              this.confirmarCerrarApp();
+            }
+          });
+        });
+      }
+    });
+  }
+
+  private async confirmarCerrarApp() {
+    const alert = await this.alertController.create({
+      header: 'Cerrar app',
+      message: '¿ Esta seguro de salir de la aplicación ?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Cancelado');
+          }
+        }, {
+          text: 'Salir',
+          cssClass: 'primary',
+          handler: () => {
+            navigator["app"].exitApp();
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
 }

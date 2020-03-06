@@ -1,7 +1,7 @@
 export const exprRegEmail = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 export const errorInterno = {
     titulo: '¡ Error Interno !',
-    msj: 'Ocurrio un error en la operación de la solicitud dentro del servidor, ¡ Porfavor pongase en contacto con el administrador. '
+    msj: 'Ocurrio un error interno en el servidor. Porfavor pongase en contacto con el administrador'
 };
 export const nameMonth = [
     {

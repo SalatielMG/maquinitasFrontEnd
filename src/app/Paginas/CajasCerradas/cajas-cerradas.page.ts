@@ -3,12 +3,13 @@ import {CajaService} from '../../Servicios/Caja/caja.service';
 import {UtileriasService} from '../../Servicios/Utilerias/utilerias.service';
 import {UsuarioService} from '../../Servicios/Usuario/usuario.service';
 import {VistaCajaClose} from '../../Modelos/Caja/Cerradas/vistaCajaClose';
-import {AlertController} from '@ionic/angular';
+import {AlertController, Platform} from '@ionic/angular';
+//import { PdfViewer } from 'capacitor-pdf-viewer-plugin';
+import { Plugins } from '@capacitor/core';
 /*import { File } from "@ionic-native/file/ngx";
 import {FileTransfer, FileTransferObject} from '@ionic-native/file-transfer/ngx';
 import { FileOpener } from "@ionic-native/file-opener/ngx";*/
 import { URL } from '../../Servicios/Utilerias/app.config';
-import { Plugins } from '@capacitor/core';
 
 
 @Component({
@@ -20,8 +21,9 @@ export class CajasCerradasPage implements OnInit {
 
   public customAlertOptions: any = {
     header: 'Filtros',
-    subHeader: 'Selecciona los filtros para la busqueda de cajas cerradas'
+    subHeader: 'Selecciona los filtros para la busqueda de cajas cerradas',
   };
+
   public alturaPagina = window.innerHeight - 117;
   @ViewChild("cntItemsBusqueda", {read: "", static: false}) cntItemsBusqueda = ElementRef;
   @ViewChildren('cntCajaCerrada') cntCajasCerradas = ElementRef;
@@ -31,6 +33,7 @@ export class CajasCerradasPage implements OnInit {
               private usuarioService: UsuarioService,
               private renderer2: Renderer2,
               private alertController: AlertController,
+              private platform: Platform
               /*private fileOpener: FileOpener,
               private transfer: FileTransfer,
               private file: File*/
@@ -213,27 +216,32 @@ export class CajasCerradasPage implements OnInit {
           idCaja, typeReport).subscribe(result => {
             this.util.detenerLoading();
             console.log(result);
-          const { Browser } = Plugins;
+            const urlReport = URL + "report/" + result.namePDF;
+            /*if (this.platform.is('ios')) {
+              const { PdfViewer } = Plugins;
+              PdfViewer.show( { url: urlReport } )
+                  .then( res => {
+                    console.log(res);
+                  })
+                  .catch( err => {
+                    console.error(err);
+                  });
+            } else */ if (this.platform.is('android')) {
+              const { Browser } = Plugins;
+              Browser.open({ url: urlReport });
+            } else if (this.platform.is('ios')) {
+              //const { SFSafariViewController } = Plugins;
+              //SFSafariViewController.open({ url: urlReport });
+              window.location.assign (urlReport);
+            } else {
+              window.open( urlReport, '_blank');
+          }
 
-          Browser.open({ url: URL + "report/" + result.namePDF });
             //this.download(URL + "report/" + result.namePDF, result.name);
       }, error => {
         this.util.msjToastErrorInterno(error.message);
       });
     });
   }
-
-  /*public download(url: string, title: string) {
-    this.fileTransfer = this.transfer.create();
-    this.fileTransfer
-        .download(url, this.file.dataDirectory + title + ".pdf")
-        .then(entry => {
-          console.log("download complete: " + entry.toURL());
-          this.fileOpener
-              .open(entry.toURL(), "application/pdf")
-              .then(() => console.log("File is opened"))
-              .catch(e => console.log("Error opening file", e));
-        });
-  }*/
 
 }

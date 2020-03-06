@@ -50,6 +50,8 @@
   src: url('/assets/fonts/decker/DeckerBoldItalic.ttf');
 }
 
+
+
 ion-title{
   text-align: center;
 }
@@ -162,6 +164,9 @@ ion-toolbar
         height: 60px;
         width: 60px;
         border-radius: 50%;
+        ion-icon {
+          width: 100%;
+        }
       }
     }
   }
@@ -235,6 +240,9 @@ ion-toolbar
     height: 60px;
     width: 60px;
     border-radius: 50%;
+    ion-icon {
+      width: 100%;
+    }
   }
 }
 
@@ -295,6 +303,22 @@ ion-toolbar
 }
 .badge-verde{
   --background: #009907 !important;
+}
+
+.toast-warning {
+  --color: white;
+  --background: #ffb600 !important;
+  text-align: justify !important;
+}
+.toast-success {
+  --color: white;
+  --background: #009907 !important;
+  text-align: justify !important;
+}
+.toast-danger {
+  --color: white;
+  --background: #f00000 !important;
+  text-align: justify !important;
 }
 
 ion-item {
