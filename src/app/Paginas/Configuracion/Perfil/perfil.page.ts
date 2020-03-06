@@ -4,8 +4,8 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { UtileriasService } from '../../../Servicios/Utilerias/utilerias.service';
 import { ModalActualizarContraseAPage } from './ModalActualizarContraseña/modal-actualizar-contraseña.page';
 import { ModalActualizarImagenPage } from './ModalActualizarImagen/modal-actualizar-imagen.page';
-import { URL } from '../../../Servicios/Utilerias/app.config';
-
+import { environment } from '../../../../environments/environment';
+const { URL } = environment;
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',

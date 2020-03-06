@@ -3,7 +3,8 @@ import { Configuracion } from '../../Modelos/Configuracion/configuracion';
 import { Plugins } from '@capacitor/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import { URL } from '../Utilerias/app.config';
+import { environment } from '../../../environments/environment';
+const { URL } = environment;
 const { Storage } = Plugins;
 
 @Injectable({

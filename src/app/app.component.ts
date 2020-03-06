@@ -5,7 +5,8 @@ import { UsuarioService } from './Servicios/Usuario/usuario.service';
 import { Router } from '@angular/router';
 import { CajaService } from './Servicios/Caja/caja.service';
 import { ConfiguracionService } from './Servicios/Configuracion/configuracion.service';
-import { URL } from './Servicios/Utilerias/app.config';
+import { environment } from '../environments/environment';
+const { URL } = environment;
 
 @Component({
   selector: 'app-root',

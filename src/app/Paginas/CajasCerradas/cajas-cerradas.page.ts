@@ -4,12 +4,9 @@ import {UtileriasService} from '../../Servicios/Utilerias/utilerias.service';
 import {UsuarioService} from '../../Servicios/Usuario/usuario.service';
 import {VistaCajaClose} from '../../Modelos/Caja/Cerradas/vistaCajaClose';
 import {AlertController, Platform} from '@ionic/angular';
-//import { PdfViewer } from 'capacitor-pdf-viewer-plugin';
 import { Plugins } from '@capacitor/core';
-/*import { File } from "@ionic-native/file/ngx";
-import {FileTransfer, FileTransferObject} from '@ionic-native/file-transfer/ngx';
-import { FileOpener } from "@ionic-native/file-opener/ngx";*/
-import { URL } from '../../Servicios/Utilerias/app.config';
+import { environment } from '../../../environments/environment';
+const { URL } = environment;
 
 
 @Component({

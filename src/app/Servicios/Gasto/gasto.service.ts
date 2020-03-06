@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Gasto } from '../../Modelos/Gasto/Gasto';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {URL} from '../Utilerias/app.config';
+import { environment } from '../../../environments/environment';
+const { URL } = environment;
 
 @Injectable({
   providedIn: 'root'

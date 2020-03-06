@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { Plugins } from '@capacitor/core';
 import { Observable } from 'rxjs';
 const { Storage } = Plugins;
-import { URL } from '../Utilerias/app.config';
 import {UsuarioSession} from '../../Modelos/Usuario/usuarioSession';
-
+import { environment } from '../../../environments/environment';
+const { URL } = environment;
 @Injectable({
   providedIn: 'root'
 })
