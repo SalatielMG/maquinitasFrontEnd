@@ -25,7 +25,7 @@ export class CajasCerradasPage implements OnInit {
   };
 
   public alturaPagina = window.innerHeight - 117;
-  @ViewChild("cntItemsBusqueda", {read: "", static: false}) cntItemsBusqueda = ElementRef;
+  @ViewChild("cntItemsBusqueda", { read: "" }) cntItemsBusqueda = ElementRef;
   @ViewChildren('cntCajaCerrada') cntCajasCerradas = ElementRef;
   //fileTransfer: FileTransferObject;
   constructor(public cajaService: CajaService,

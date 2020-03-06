@@ -18,7 +18,7 @@ export class ModalGastoPage implements OnInit {
 
   public opcion: string;
   public Gasto: FormGroup = null;
-  @ViewChild("cntCajaActual", {static: false}) cntCajaActual = ElementRef;
+  @ViewChild("cntCajaActual") cntCajaActual = ElementRef;
 
   constructor(private modalController: ModalController,
               private navParams: NavParams,
