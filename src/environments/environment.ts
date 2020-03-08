@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  URL: 'http://localhost:90/maquinitasBackEnd/public/'
+  URL: 'http://localhost:90/maquinitas/'
 };
 
 /*

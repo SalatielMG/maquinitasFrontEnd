@@ -54,6 +54,8 @@ export class LoginPage implements OnInit {
           })
         }
       }, error => {
+        console.log('Error ', error);
+
         this.util.msjToastErrorInterno(error.message);
       });
       console.log(this.usuario.value);

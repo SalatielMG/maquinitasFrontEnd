@@ -22,7 +22,7 @@ export class CajasCerradasPage implements OnInit {
   };
 
   public alturaPagina = window.innerHeight - 117;
-  @ViewChild("cntItemsBusqueda", { read: "" }) cntItemsBusqueda = ElementRef;
+  @ViewChild("cntItemsBusqueda", { static: false }) cntItemsBusqueda = ElementRef;
   @ViewChildren('cntCajaCerrada') cntCajasCerradas = ElementRef;
   //fileTransfer: FileTransferObject;
   constructor(public cajaService: CajaService,

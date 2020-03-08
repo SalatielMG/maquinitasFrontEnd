@@ -17,7 +17,7 @@ export class ModalDevolucionPage implements OnInit {
 
   public opcion: string;
   public Devolucion: FormGroup = null;
-  @ViewChild("cntCajaActual") cntCajaActual = ElementRef;
+  @ViewChild("cntCajaActual", {static: false }) cntCajaActual = ElementRef;
 
   constructor(private modalController: ModalController,
               private navParams: NavParams,
