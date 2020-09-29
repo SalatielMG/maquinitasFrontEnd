@@ -5,7 +5,9 @@
   "homepage": "www.montezcode.com",
   "scripts": {
     "ng": "ng",
+    "start:production": "ng serve -c=production --port 4401",
     "start": "ng serve",
+    "build:production": "ng build -c=production",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
